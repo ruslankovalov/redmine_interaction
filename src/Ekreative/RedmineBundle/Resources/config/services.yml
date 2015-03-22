@@ -1,4 +1,6 @@
 services:
+    ekreative_redmine:
+        class: Ekreative\RedmineBundle\Redmine\Api
 #    ekreative_redmine.example:
 #        class: Ekreative\RedmineBundle\Example
 #        arguments: [@service_id, "plain_value", %parameter%]
