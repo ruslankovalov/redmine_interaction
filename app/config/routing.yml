@@ -1,3 +1,7 @@
+ekreative_redmine:
+    resource: "@EkreativeRedmineBundle/Resources/config/routing.yml"
+    prefix:   /
+
 app:
     resource: "@AppBundle/Controller/"
     type:     annotation

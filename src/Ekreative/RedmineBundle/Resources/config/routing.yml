@@ -1,0 +1,3 @@
+ekreative_redmine_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: EkreativeRedmineBundle:Default:index }
