@@ -15,3 +15,7 @@ logout:
 projects:
     path: /
     defaults: { _controller: EkreativeRedmineBundle:Redmine:index }
+
+issues_per_project:
+    path: /issues/{projectId}
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:getIssuesPerProject }

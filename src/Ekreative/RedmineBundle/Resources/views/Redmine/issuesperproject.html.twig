@@ -1,0 +1,17 @@
+<a href="{{ path('projects') }}">Back To Projects</a>
+
+<h1>Issues</h1>
+<ul>
+    {% for issue in issues %}
+        <li>{{ issue.id }}. {{ issue.subject }}</li>
+    {% endfor %}
+    {% if pages > 1 %}
+        <div>
+            {% for page in 1..pages %}
+                <li style="list-style: none; display: inline-block;">
+                    <a href="{{  path('issues_per_project', {'projectId': projectId}) }}?page={{ page }}">{{ page }}</a>
+                </li>
+            {% endfor %}
+        </div>
+    {% endif %}
+</ul>

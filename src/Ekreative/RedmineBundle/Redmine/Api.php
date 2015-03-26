@@ -24,12 +24,44 @@ class Api {
     public function getProjectList()
     {
         $path = '/projects.json';
+        $result = $this->request($path);
+        return $result;
+    }
+
+    public function getIssuesPerProject($projectId, $page, $limit)
+    {
+        $offset = $limit * ($page - 1);
+        $path = "/issues.json?project_id=$projectId&offset=$offset&limit=$limit";
+        $result = $this->request($path);
+        return $result;
+    }
+
+    public function request($path, $method = 'GET', $data = '')
+    {
+
         $curl = curl_init($this->getUrl() . $path);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
             'Content-Type: application/json',
             'X-Redmine-API-Key: ' . $this->getApiKey()
         ));
+        switch ($method) {
+            case 'POST':
+                curl_setopt($curl, CURLOPT_POST, 1);
+                if ($data) {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                }
+                break;
+            case 'PUT':
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'PUT');
+                if ($data) {
+                    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+                }
+                break;
+            case 'DELETE':
+                curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
+                break;
+        }
         $result = curl_exec($curl);
         curl_close($curl);
         return json_decode($result);

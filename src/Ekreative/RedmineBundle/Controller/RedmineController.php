@@ -15,4 +15,22 @@ class RedmineController extends Controller {
 
         return $this->render('EkreativeRedmineBundle:Redmine:projects.html.twig', array('projects' => $projects->projects));
     }
+
+    public function getIssuesPerProjectAction($projectId, Request $request)
+    {
+        $page = $request->get('page') ? $request->get('page') : 1;
+        $limit = $request->get('limit') ? $request->get('limit') : 25;
+        $redmine = $this->get('ekreative_redmine');
+        $issues = $redmine->getIssuesPerProject($projectId, $page, $limit);
+        $pages = ceil($issues->total_count / $limit);
+        $templateData = array(
+            'issues' => $issues->issues,
+            'pages' => $pages,
+            'current_page' => $page,
+            'limit' => $limit,
+            'projectId' => $projectId
+        );
+        return $this->render('EkreativeRedmineBundle:Redmine:issuesperproject.html.twig', $templateData);
+
+    }
 }
