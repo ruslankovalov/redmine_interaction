@@ -19,3 +19,11 @@ projects:
 issues_per_project:
     path: /issues/{projectId}
     defaults: { _controller: EkreativeRedmineBundle:Redmine:getIssuesPerProject }
+
+log_time:
+    path: /project/{projectId}/logtime
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:logTime }
+
+track:
+    path: /track
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:track }

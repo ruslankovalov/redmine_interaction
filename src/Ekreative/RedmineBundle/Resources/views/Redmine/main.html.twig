@@ -1,0 +1,27 @@
+{% extends '::base.html.twig' %}
+{% block title %}Ekreative Redmone{% endblock %}
+{% block body %}
+    {% block flash_messages %}
+        <div class="flash-messages-wrapper">
+            <ul class="flash-messages">
+                {% for flashType, flashMessages in app.session.flashbag %}
+                    <li class="{{ flashType }}">
+                        <ul>
+                            {% for flashMessage in flashMessages %}
+                                <li>{{ flashMessage }}</li>
+                            {% endfor %}
+                        </ul>
+                    </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% endblock %}
+    {% block content %}
+        <h1>Projects</h1>
+        <ul>
+            {% for project in projects %}
+                <li><a href="{{  path('issues_per_project', {'projectId': project.id}) }}">{{ project.name }}</a></li>
+            {% endfor %}
+        </ul>
+    {% endblock %}
+{% endblock %}

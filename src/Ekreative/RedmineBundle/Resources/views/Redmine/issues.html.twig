@@ -1,6 +1,9 @@
-<a href="{{ path('projects') }}">Back To Projects</a>
-
-<h1>Issues</h1>
+{% extends 'EkreativeRedmineBundle:Redmine:main.html.twig' %}
+{% block title %}{{ issues.0.project.name}}{% endblock %}
+{% block content %}
+<h1>{{ issues.0.project.name}}</h1>
+<a href="{{ path('log_time', {'projectId': projectId}) }}">Log Time</a>
+<h2>Issues</h2>
 <ul>
     {% for issue in issues %}
         <li>{{ issue.id }}. {{ issue.subject }}</li>
@@ -15,3 +18,6 @@
         </div>
     {% endif %}
 </ul>
+<a href="{{ path('projects') }}">Back To Projects</a>
+{% endblock %}
+

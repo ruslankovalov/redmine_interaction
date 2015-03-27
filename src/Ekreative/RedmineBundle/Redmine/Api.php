@@ -36,9 +36,18 @@ class Api {
         return $result;
     }
 
+    public function LogTime($data)
+    {
+        if ($data['issue_id']) {
+            unset($data['project_id']);
+        }
+        $json = json_encode(array('time_entry' => $data));
+        $result = $this->request('/time_entries.json', 'POST', $json);
+        return $result;
+    }
+
     public function request($path, $method = 'GET', $data = '')
     {
-
         $curl = curl_init($this->getUrl() . $path);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HTTPHEADER, array(
@@ -63,6 +72,10 @@ class Api {
                 break;
         }
         $result = curl_exec($curl);
+        $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
+        if ($responseCode == 411) {
+//            TODO: exception handling
+        }
         curl_close($curl);
         return json_decode($result);
     }

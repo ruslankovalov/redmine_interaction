@@ -1,6 +1,0 @@
-<h1>Projects</h1>
-<ul>
-    {% for project in projects %}
-        <li><a href="{{  path('issues_per_project', {'projectId': project.id}) }}">{{ project.name }}</a></li>
-    {% endfor %}
-</ul>
