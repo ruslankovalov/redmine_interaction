@@ -1,6 +1,9 @@
 {% extends '::base.html.twig' %}
 {% block title %}Ekreative Redmone{% endblock %}
 {% block body %}
+    <a href="{{ path('logout') }}">Log Out</a>
+    {% block menu %}{% endblock %}
+    {% block projectname %}{% endblock %}
     {% block flash_messages %}
         <div class="flash-messages-wrapper">
             <ul class="flash-messages">
@@ -20,7 +23,7 @@
         <h1>Projects</h1>
         <ul>
             {% for project in projects %}
-                <li><a href="{{  path('issues_per_project', {'projectId': project.id}) }}">{{ project.name }}</a></li>
+                <li><a href="{{  path('issues', {'projectId': project.id}) }}">{{ project.name }}</a></li>
             {% endfor %}
         </ul>
     {% endblock %}

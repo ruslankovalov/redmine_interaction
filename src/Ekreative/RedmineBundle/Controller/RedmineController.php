@@ -8,7 +8,9 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Length;
 use Symfony\Component\Validator\Constraints\NotBlank;
-use Symfony\Component\Validator\Constraints\Date;
+use Ekreative\RedmineBundle\Entity\Comment;
+use Ekreative\RedmineBundle\Form\Type\CommentType;
+
 
 class RedmineController extends Controller {
 
@@ -16,31 +18,86 @@ class RedmineController extends Controller {
     {
         $redmine = $this->get('ekreative_redmine');
         $projects = $redmine->getProjectList();
-//        $projects = array('test', 'test2', 'test3', 'test4', 'test5');
 
         return $this->render('EkreativeRedmineBundle:Redmine:main.html.twig', array('projects' => $projects->projects));
     }
 
-    public function getIssuesPerProjectAction($projectId, Request $request)
+    public function issuesAction($projectId, Request $request)
     {
         $page = $request->get('page') ? $request->get('page') : 1;
         $limit = $request->get('limit') ? $request->get('limit') : 25;
         $redmine = $this->get('ekreative_redmine');
-        $issues = $redmine->getIssuesPerProject($projectId, $page, $limit);
+        $project = $redmine->getProject($projectId);
+        $issues = $redmine->getIssues($projectId, $page, $limit);
         $pages = ceil($issues->total_count / $limit);
         $templateData = array(
             'issues'       => $issues->issues,
             'pages'        => $pages,
             'current_page' => $page,
             'limit'        => $limit,
-            'projectId'    => $projectId
+            'project'    => $project->project
         );
-        return $this->render('EkreativeRedmineBundle:Redmine:issues.html.twig', $templateData);
 
+        return $this->render('EkreativeRedmineBundle:Redmine:project.html.twig', $templateData);
+    }
+
+    public function commentsAction($projectId)
+    {
+        $redmine = $this->get('ekreative_redmine');
+        $project = $redmine->getProject($projectId);
+        $repository = $this->getDoctrine()
+            ->getRepository('EkreativeRedmineBundle:Comment');
+        $comments = $repository->findBy(
+            array('projectId' => $projectId)
+        );
+
+        return $this->render('EkreativeRedmineBundle:Redmine:comments.html.twig', array(
+            'comments'   => $comments,
+            'project' => $project->project
+            ));
+    }
+
+    public function commentAction($projectId, Request $request)
+    {
+        $redmine = $this->get('ekreative_redmine');
+        $project = $redmine->getProject($projectId);
+        $comment = new Comment();
+        $comment->setProjectId((int) $projectId);
+        $comment->setCreatedAt(new \DateTime());
+        $comment->setUpdatedAt(new \DateTime());
+        $comment->setAuthor($this->getUser()->getUsername());
+
+        $form = $this->createForm(new CommentType(), $comment);
+        $form->handleRequest($request);
+
+        if ($form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($form->getData());
+            $em->flush();
+            $this->addFlash(
+                'success',
+                'Comment is successfully saved'
+            );
+
+            return $this->redirectToRoute('comments', array('projectId' => $projectId));
+
+        } else if ($form->isSubmitted()) {
+            $this->addFlash(
+                'notice',
+                'Your data is not valid!'
+            );
+        }
+
+        return $this->render('EkreativeRedmineBundle:Redmine:form.html.twig', array(
+            'form' => $form->createView(),
+            'project' => $project->project
+        ));
     }
 
     public function logTimeAction($projectId, Request $request)
     {
+        $redmine = $this->get('ekreative_redmine');
+        $project = $redmine->getProject($projectId);
         $defaultData = array(
             'date' => new \DateTime
         );
@@ -55,7 +112,7 @@ class RedmineController extends Controller {
                 'widget' => 'choice',
                 'required' => true,
                 'constraints' => array(
-                    new Date()
+                    new DateTime()
                 )
             ))
             ->add('hours', 'number', array(
@@ -70,7 +127,8 @@ class RedmineController extends Controller {
                     new Length(array('min' => 3))
                 )
             ))
-            ->add('activity', 'choice', array(
+            ->add('activity_id', 'choice', array(
+                'label' => 'Activity',
                 'required' => true,
                 'choices' => array(
                     '8'  => 'Design',
@@ -96,24 +154,19 @@ class RedmineController extends Controller {
                 'success',
                 'Successful creation.'
             );
+
+            return $this->redirectToRoute('issues', array('projectId' => $projectId));
+
         }  else if ($form->isSubmitted()) {
             $this->addFlash(
                 'notice',
                 'Your data is not valid!'
             );
         }
-        return $this->render('EkreativeRedmineBundle:Redmine:log_time_form.html.twig', array(
+
+        return $this->render('EkreativeRedmineBundle:Redmine:form.html.twig', array(
             'form' => $form->createView(),
-            'project_id' => $projectId
+            'project' => $project->project
         ));
     }
-
-    public function trackAction()
-    {
-        $redmine = $this->get('ekreative_redmine');
-        $result = $redmine->track();
-        $response = new Response($result);
-        return $response;
-    }
-
 }

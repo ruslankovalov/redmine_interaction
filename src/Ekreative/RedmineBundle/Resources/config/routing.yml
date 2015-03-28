@@ -16,9 +16,17 @@ projects:
     path: /
     defaults: { _controller: EkreativeRedmineBundle:Redmine:index }
 
-issues_per_project:
-    path: /issues/{projectId}
-    defaults: { _controller: EkreativeRedmineBundle:Redmine:getIssuesPerProject }
+comments:
+    path: /project/{projectId}/comments
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:comments }
+
+comment:
+    path: /project/{projectId}/comment
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:comment }
+
+issues:
+    path: /project/{projectId}/issues
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:issues }
 
 log_time:
     path: /project/{projectId}/logtime
@@ -27,3 +35,4 @@ log_time:
 track:
     path: /track
     defaults: { _controller: EkreativeRedmineBundle:Redmine:track }
+

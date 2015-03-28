@@ -1,7 +1,0 @@
-{% extends 'EkreativeRedmineBundle:Redmine:main.html.twig' %}
-{% block content %}
-    {{ form_start(form) }}
-    {{ form_widget(form) }}
-    {{ form_end(form) }}
-    <a href="{{  path('issues_per_project', {'projectId': project_id}) }}">Back To Project</a>
-{% endblock %}

@@ -28,7 +28,14 @@ class Api {
         return $result;
     }
 
-    public function getIssuesPerProject($projectId, $page, $limit)
+    public function getProject($projectId)
+    {
+        $path = "/projects/$projectId.json";
+        $result = $this->request($path);
+        return $result;
+    }
+
+    public function getIssues($projectId, $page, $limit)
     {
         $offset = $limit * ($page - 1);
         $path = "/issues.json?project_id=$projectId&offset=$offset&limit=$limit";

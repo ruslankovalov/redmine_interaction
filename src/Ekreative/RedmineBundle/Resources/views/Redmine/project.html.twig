@@ -1,0 +1,34 @@
+{% extends 'EkreativeRedmineBundle:Redmine:main.html.twig' %}
+{% block title %}{{ project.name }}{% endblock %}
+{% block menu %}
+    <ul class="nav">
+        <li><a href="{{ path('projects') }}">Projects</a></li>
+        <li><a href="{{ path('issues', {'projectId': project.id}) }}">Issues</a></li>
+        <li><a href="{{ path('comments', {'projectId': project.id}) }}">Comments</a></li>
+        <li><a href="{{ path('comment', {'projectId': project.id}) }}">Create a comment</a></li>
+        <li><a href="{{ path('log_time', {'projectId': project.id}) }}">Log Time</a></li>
+    </ul>
+{% endblock %}
+{#{% block projectname %}#}
+    {#<h1>{{ project.name }}</h1>#}
+    {#<p>Total hours: {{ project.hours }}</p>#}
+{#{% endblock %}#}
+{% block content %}
+
+    <h2>Issues</h2>
+    <ul>
+        {% for issue in issues %}
+            <li>{{ issue.id }}. {{ issue.subject }}</li>
+        {% endfor %}
+        {% if pages > 1 %}
+            <div>
+                {% for page in 1..pages %}
+                    <li style="list-style: none; display: inline-block;">
+                        <a href="{{  path('issues', {'projectId': project.id}) }}?page={{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </ul>
+{% endblock %}
+
