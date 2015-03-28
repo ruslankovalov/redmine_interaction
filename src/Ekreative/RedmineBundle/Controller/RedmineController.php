@@ -54,7 +54,7 @@ class RedmineController extends Controller {
         return $this->render('EkreativeRedmineBundle:Redmine:comments.html.twig', array(
             'comments'   => $comments,
             'project' => $project->project
-            ));
+        ));
     }
 
     public function commentAction($projectId, Request $request)
@@ -146,14 +146,18 @@ class RedmineController extends Controller {
             $data = $form->getData();
             $redmine = $this->get('ekreative_redmine');
             $data['project_id'] = $projectId;
-            $date = $data['date']->format('Y-m-d');
-            $data['date'] = $date;
+            $date = $data['date'];
             $result = $redmine->logTime($data);
-//            TODO: handle success and error
-            $this->addFlash(
-                'success',
-                'Successful creation.'
-            );
+
+            if (isset($result->errors)) {
+                $errors = $result->errors;
+                $this->addFlash('error', 'Your request has failed. Please try again later.');
+                foreach ($errors as $error) {
+                    $this->addFlash('error', $error);
+                }
+            } else {
+                $this->addFlash('success', 'Time successfully logged.');
+            }
 
             return $this->redirectToRoute('issues', array('projectId' => $projectId));
 
