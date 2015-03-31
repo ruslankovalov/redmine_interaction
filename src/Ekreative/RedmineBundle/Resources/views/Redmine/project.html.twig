@@ -9,16 +9,15 @@
         <li><a href="{{ path('log_time', {'projectId': project.id}) }}">Log Time</a></li>
     </ul>
 {% endblock %}
-{#{% block projectname %}#}
-    {#<h1>{{ project.name }}</h1>#}
-    {#<p>Total hours: {{ project.hours }}</p>#}
-{#{% endblock %}#}
+{% block projectname %}
+    <h1>{{ project.name }}</h1>
+{% endblock %}
 {% block content %}
 
     <h2>Issues</h2>
     <ul>
         {% for issue in issues %}
-            <li>{{ issue.id }}. {{ issue.subject }}</li>
+            <li><a href="{{ path('log_time_issue', {'projectId': project.id, 'issueId': issue.id}) }}"> {{ issue.id }}. {{ issue.subject }}</a></li>
         {% endfor %}
         {% if pages > 1 %}
             <div>

@@ -32,7 +32,7 @@ log_time:
     path: /project/{projectId}/logtime
     defaults: { _controller: EkreativeRedmineBundle:Redmine:logTime }
 
-track:
-    path: /track
-    defaults: { _controller: EkreativeRedmineBundle:Redmine:track }
+log_time_issue:
+    path:  /project/{projectId}/issues/{issueId}/logtime
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:logTime }
 

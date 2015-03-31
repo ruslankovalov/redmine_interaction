@@ -94,12 +94,13 @@ class RedmineController extends Controller {
         ));
     }
 
-    public function logTimeAction($projectId, Request $request)
+    public function logTimeAction($projectId, $issueId = null, Request $request)
     {
         $redmine = $this->get('ekreative_redmine');
         $project = $redmine->getProject($projectId);
         $defaultData = array(
-            'date' => new \DateTime
+            'date'     => new \DateTime,
+            'issue_id' => $issueId
         );
         $form = $this->createFormBuilder($defaultData)
             ->add('issue_id', 'number', array(
