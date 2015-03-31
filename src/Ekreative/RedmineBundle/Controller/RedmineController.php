@@ -3,7 +3,6 @@
 namespace Ekreative\RedmineBundle\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\BrowserKit\Response;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints\Length;
@@ -14,6 +13,11 @@ use Ekreative\RedmineBundle\Form\Type\CommentType;
 
 class RedmineController extends Controller {
 
+    /**
+     * Lists all of projects
+     *
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function indexAction()
     {
         $redmine = $this->get('ekreative_redmine');
@@ -21,6 +25,14 @@ class RedmineController extends Controller {
 
         return $this->render('EkreativeRedmineBundle:Redmine:main.html.twig', array('projects' => $projects->projects));
     }
+
+    /**
+     * Lists issues of a project
+     *
+     * @param int $projectId
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
 
     public function issuesAction($projectId, Request $request)
     {
@@ -41,6 +53,12 @@ class RedmineController extends Controller {
         return $this->render('EkreativeRedmineBundle:Redmine:project.html.twig', $templateData);
     }
 
+    /**
+     * Lists comments of a project
+     *
+     * @param int $projectId
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
     public function commentsAction($projectId)
     {
         $redmine = $this->get('ekreative_redmine');
@@ -56,6 +74,13 @@ class RedmineController extends Controller {
         ));
     }
 
+    /**
+     * Comment forms that allow comment on a projects
+     *
+     * @param int $projectId
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function commentAction($projectId, Request $request)
     {
         $redmine = $this->get('ekreative_redmine');
@@ -93,6 +118,14 @@ class RedmineController extends Controller {
         ));
     }
 
+    /**
+     * Log time form allows to log time per project or per issue(if issue ID is passed)
+     *
+     * @param int $projectId
+     * @param int $issueId
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
+     */
     public function logTimeAction($projectId, $issueId = null, Request $request)
     {
         $redmine = $this->get('ekreative_redmine');

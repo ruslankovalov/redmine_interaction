@@ -15,7 +15,9 @@ class Api {
     private $url;
     private $apiKey;
 
-
+    /**
+     * Sets Url and Api key for authorization
+     */
     public function __construct()
     {
         $this->setUrl('https://redmine.ekreative.com')
@@ -23,6 +25,11 @@ class Api {
         return $this;
     }
 
+    /**
+     * Retrieve list of all projects
+     *
+     * @return object
+     */
     public function getProjectList()
     {
         $path = '/projects.json';
@@ -30,6 +37,12 @@ class Api {
         return $result;
     }
 
+    /**
+     * Get project by ID
+     *
+     * @param int $projectId
+     * @return object
+     */
     public function getProject($projectId)
     {
         $path = "/projects/$projectId.json";
@@ -37,6 +50,14 @@ class Api {
         return $result;
     }
 
+    /**
+     * Retrieve list of all issues of given project
+     *
+     * @param int $projectId
+     * @param int $page
+     * @param int $limit
+     * @return object
+     */
     public function getIssues($projectId, $page, $limit)
     {
         $offset = $limit * ($page - 1);
@@ -45,6 +66,12 @@ class Api {
         return $result;
     }
 
+    /**
+     * Log time for project or issue(if issue id is given)
+     *
+     * @param array $data
+     * @return object
+     */
     public function LogTime($data)
     {
         if ($data['issue_id']) {
@@ -55,6 +82,15 @@ class Api {
         return $result;
     }
 
+    /**
+     * Perform request to API and returns decoded json
+     *
+     * @param $path
+     * @param string $method
+     * @param string $data
+     * @return mixed
+     * @throws FatalErrorException
+     */
     public function request($path, $method = 'GET', $data = '')
     {
         $curl = curl_init($this->getUrl() . $path);
@@ -96,22 +132,44 @@ class Api {
         return $result;
     }
 
+    /**
+     * Get URL of API
+     *
+     * @return string
+     */
     public function getUrl()
     {
         return $this->url;
     }
 
+    /**
+     *  Get API key for authorization
+     *
+     * @return string
+     */
     public function getApiKey()
     {
         return $this->apiKey;
     }
 
+    /**
+     * Set URL of API
+     *
+     * @param string $url
+     * @return Api
+     */
     public function setUrl($url)
     {
         $this->url = $url;
         return $this;
     }
 
+    /**
+     * Set API key for authorization
+     *
+     * @param string $apiKey
+     * @return Api
+     */
     public function setApiKey($apiKey)
     {
         $this->apiKey = $apiKey;
