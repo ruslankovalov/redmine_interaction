@@ -1,0 +1,26 @@
+Ekreative\RedmineBundle\Entity\Comment:
+    type: entity
+    table: comment
+    repositoryClass: Ekreative\RedmineBundle\Entity\CommentRepository
+    id:
+        id:
+            type: integer
+            id: true
+            generator:
+                strategy: AUTO
+    fields:
+        projectId:
+            type: integer
+            column: project_id
+        text:
+            type: text
+        author:
+            type: string
+            length: 255
+        createdAt:
+            type: datetime
+            column: created_at
+        updatedAt:
+            type: datetime
+            column: updated_at
+    lifecycleCallbacks: {  }

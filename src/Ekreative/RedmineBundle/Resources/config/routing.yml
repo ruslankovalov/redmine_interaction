@@ -1,0 +1,38 @@
+ekreative_redmine_homepage:
+    path:     /hello/{name}
+    defaults: { _controller: EkreativeRedmineBundle:Default:index }
+
+login_route:
+    path:     /login
+    defaults: { _controller: EkreativeRedmineBundle:Security:login }
+
+login_check:
+    path: /login_check
+
+logout:
+    path: /logout
+
+projects:
+    path: /
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:index }
+
+comments:
+    path: /project/{projectId}/comments
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:comments }
+
+comment:
+    path: /project/{projectId}/comment
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:comment }
+
+issues:
+    path: /project/{projectId}/issues
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:issues }
+
+log_time:
+    path: /project/{projectId}/logtime
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:logTime }
+
+log_time_issue:
+    path:  /project/{projectId}/issues/{issueId}/logtime
+    defaults: { _controller: EkreativeRedmineBundle:Redmine:logTime }
+

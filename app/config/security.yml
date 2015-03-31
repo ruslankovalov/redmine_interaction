@@ -1,7 +1,17 @@
 security:
+
+    encoders:
+        Symfony\Component\Security\Core\User\User:
+            algorithm: bcrypt
+            cost: 12
+
     providers:
         in_memory:
-            memory: ~
+            memory:
+                users:
+                    admin:
+                        password: $2a$12$UYUYJ2Xscw/zcAD.C0.Gcu1Igqelul/IIpeUOF5FRRIfkxZX90eT2
+                        roles: ROLE_ADMIN
 
     firewalls:
         dev:
@@ -10,3 +20,15 @@ security:
 
         default:
             anonymous: ~
+            http_basic: ~
+            form_login:
+                login_path: /login
+                check_path: /login_check
+                csrf_provider: form.csrf_provider
+            logout:
+                path:   /logout
+                target: /login
+
+    access_control:
+        - { path: ^/login, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, roles: ROLE_ADMIN }

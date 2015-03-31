@@ -1,0 +1,19 @@
+Ekreative\RedmineBundle\Entity\Comment:
+    properties:
+        projectId:
+            - NotBlank: ~
+            - Type: integer
+        text:
+            - NotBlank: ~
+            - Length:
+                min: 3
+        author:
+            - NotBlank: ~
+            - Length:
+                min: 3
+        createdAt:
+            - NotBlank: ~
+            - Type: \DateTime
+        updatedAt:
+            - NotBlank: ~
+            - Type: \DateTime

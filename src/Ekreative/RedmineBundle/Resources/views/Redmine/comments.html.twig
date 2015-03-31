@@ -1,0 +1,14 @@
+{% extends 'EkreativeRedmineBundle:Redmine:project.html.twig' %}
+{% block content %}
+    <h2>Comments</h2>
+    <ul>
+        {% for comment in comments %}
+            <li class="comment">
+                <p class="date">Created at: {{ comment.createdAt.format('y-d-m h:m:s') }}</p>
+                <p class="text">{{ comment.text }}</p>
+                <p class="author">Created by {{ comment.author }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+{% endblock %}
+

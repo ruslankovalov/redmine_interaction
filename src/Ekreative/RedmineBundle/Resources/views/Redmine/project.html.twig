@@ -1,0 +1,56 @@
+{% extends 'EkreativeRedmineBundle:Redmine:main.html.twig' %}
+{% block title %}{{ project.name }}{% endblock %}
+{% block menu %}
+    <ul class="nav">
+        <li><a href="{{ path('projects') }}">Projects</a></li>
+        <li>
+            <a
+                href="{{ path('issues', {'projectId': project.id}) }}"
+                class="{% if app.request.attributes.get('_route') == 'issues' %}active{% endif %}"
+                >Issues</a>
+        </li>
+        <li>
+            <a
+                href="{{ path('comments', {'projectId': project.id}) }}"
+                class="{% if app.request.attributes.get('_route') == 'comments' %}active{% endif %}"
+                >Comments</a>
+        </li>
+        <li>
+            <a
+                href="{{ path('comment', {'projectId': project.id}) }}"
+                class="{% if app.request.attributes.get('_route') == 'comment' %}active{% endif %}"
+                >Create a comment</a>
+        </li>
+        <li>
+            <a
+                href="{{ path('log_time', {'projectId': project.id}) }}"
+                class="{% if app.request.attributes.get('_route') == 'log_time' %}active{% endif %}"
+                >Log Time</a>
+        </li>
+    </ul>
+{% endblock %}
+{% block projectname %}
+    <h1>{{ project.name }}</h1>
+{% endblock %}
+{% block content %}
+
+    <h2>Issues</h2>
+    <ul>
+        {% for issue in issues %}
+            <li><a href="{{ path('log_time_issue', {'projectId': project.id, 'issueId': issue.id}) }}"> {{ issue.id }}. {{ issue.subject }}</a></li>
+        {% endfor %}
+        {% if pages > 1 %}
+            <div class="pages">
+                {% for page in 1..pages %}
+                    <li style="list-style: none; display: inline-block;">
+                        <a
+                                href="{{ path('issues', {'projectId': project.id}) }}?page={{ page }}"
+                                class="{% if current_page == page %}active{% endif %}"
+                                >{{ page }}</a>
+                    </li>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </ul>
+{% endblock %}
+
