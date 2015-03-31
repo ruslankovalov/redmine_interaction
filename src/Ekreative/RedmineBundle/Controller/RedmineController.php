@@ -47,9 +47,8 @@ class RedmineController extends Controller {
         $project = $redmine->getProject($projectId);
         $repository = $this->getDoctrine()
             ->getRepository('EkreativeRedmineBundle:Comment');
-        $comments = $repository->findBy(
-            array('projectId' => $projectId)
-        );
+        $comments = $repository
+            ->findBy(array('projectId' => $projectId), array('createdAt' => 'desc'));
 
         return $this->render('EkreativeRedmineBundle:Redmine:comments.html.twig', array(
             'comments'   => $comments,
@@ -76,7 +75,7 @@ class RedmineController extends Controller {
             $em->flush();
             $this->addFlash(
                 'success',
-                'Comment is successfully saved'
+                'Comment is successfully created.'
             );
 
             return $this->redirectToRoute('comments', array('projectId' => $projectId));

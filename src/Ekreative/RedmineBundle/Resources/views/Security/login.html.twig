@@ -1,25 +1,26 @@
-{% if error %}
-    <div>{{ error.messageKey|trans(error.messageData) }}</div>
-{% endif %}
+{% extends 'EkreativeRedmineBundle:Redmine:main.html.twig' %}
+{% block title %}Redmine interaction{% endblock %}
+{% block content %}
 
-<form action="{{ path('login_check') }}" method="post">
-    <label for="username">Username:</label>
-    <input type="text" id="username" name="_username" value="{{ last_username }}" />
+    <h2>Please log in to interact with Redmine</h2>
 
-    <label for="password">Password:</label>
-    <input type="password" id="password" name="_password" />
+    {% if error %}
+        <div>{{ error.messageKey|trans(error.messageData) }}</div>
+    {% endif %}
 
-    {#
-        If you want to control the URL the user
-        is redirected to on success (more details below)
-        <input type="hidden" name="_target_path" value="/account" />
-    #}
+    <form class="login" action="{{ path('login_check') }}" method="post">
+        <label for="username">Username:</label>
+        <input type="text" id="username" name="_username" value="{{ last_username }}" />
 
-    <input
-            type="hidden"
-            name="_csrf_token"
-            value="{{ csrf_token('authenticate') }}"
-            >
+        <label for="password">Password:</label>
+        <input type="password" id="password" name="_password" />
 
-    <button type="submit">login</button>
-</form>
+        <input
+                type="hidden"
+                name="_csrf_token"
+                value="{{ csrf_token('authenticate') }}"
+                >
+
+        <button type="submit">login</button>
+    </form>
+{% endblock %}

@@ -1,12 +1,14 @@
 {% extends 'EkreativeRedmineBundle:Redmine:project.html.twig' %}
 {% block content %}
     <h2>Comments</h2>
-    <a href="{{ path('comment', {'projectId': project.id}) }}">Create a comment</a>
     <ul>
         {% for comment in comments %}
-            <li>{{ comment.id }}. {{ comment.text }}</li>
+            <li class="comment">
+                <p class="date">Created at: {{ comment.createdAt.format('y-d-m h:m:s') }}</p>
+                <p class="text">{{ comment.text }}</p>
+                <p class="author">Created by {{ comment.author }}</p>
+            </li>
         {% endfor %}
     </ul>
-    <a href="{{ path('issues', {'projectId': project.id}) }}">Back To Issues</a>
 {% endblock %}
 

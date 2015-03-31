@@ -1,7 +1,14 @@
 {% extends '::base.html.twig' %}
-{% block title %}Ekreative Redmone{% endblock %}
+{% block title %}Ekreative Redmine{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('bundles/ekreativeredmine/css/styles.css', absolute=true) }}" rel="stylesheet" type="text/css" />
+{% endblock %}
 {% block body %}
-    <a href="{{ path('logout') }}">Log Out</a>
+    {% if app.user %}
+        <div class="logout">
+            <a href="{{ path('logout') }}">Log Out</a>
+        </div>
+    {% endif %}
     {% block menu %}{% endblock %}
     {% block projectname %}{% endblock %}
     {% block flash_messages %}
@@ -21,9 +28,9 @@
     {% endblock %}
     {% block content %}
         <h1>Projects</h1>
-        <ul>
+        <ul class="projects">
             {% for project in projects %}
-                <li><a href="{{  path('issues', {'projectId': project.id}) }}">{{ project.name }}</a></li>
+                <li><a href="{{ path('issues', {'projectId': project.id}) }}">{{ project.name }}</a></li>
             {% endfor %}
         </ul>
     {% endblock %}
