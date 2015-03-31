@@ -8,7 +8,6 @@
 
 namespace Ekreative\RedmineBundle\Redmine;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\HttpKernel\Exception\FatalErrorException;
 
 class Api {
 
@@ -34,6 +33,7 @@ class Api {
     {
         $path = '/projects.json';
         $result = $this->request($path);
+        var_dump($result);
         return $result;
     }
 
@@ -116,20 +116,20 @@ class Api {
                 curl_setopt($curl, CURLOPT_CUSTOMREQUEST, 'DELETE');
                 break;
         }
-        $result = json_decode(curl_exec($curl));
+        $result = curl_exec($curl);
         $responseCode = curl_getinfo($curl, CURLINFO_HTTP_CODE);
-        if (!in_array($responseCode, array(200, 201)) && is_null($result)) {
+        if (!in_array($responseCode, array(200, 201))) {
             switch ($responseCode) {
                 case 404:
-                    throw new NotFoundHttpException("Page not found");
+                    throw new NotFoundHttpException($result);
                     break;
-                case 500:
-                    throw new FatalErrorException('Internal server error');
+                default:
+                    throw new \Exception($result);
                     break;
             }
         }
         curl_close($curl);
-        return $result;
+        return json_decode($result);
     }
 
     /**
