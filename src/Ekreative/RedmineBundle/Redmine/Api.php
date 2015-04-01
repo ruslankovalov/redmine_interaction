@@ -33,7 +33,6 @@ class Api {
     {
         $path = '/projects.json';
         $result = $this->request($path);
-        var_dump($result);
         return $result;
     }
 
