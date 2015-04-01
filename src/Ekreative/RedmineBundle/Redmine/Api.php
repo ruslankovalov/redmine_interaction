@@ -88,7 +88,7 @@ class Api {
      * @param string $method
      * @param string $data
      * @return mixed
-     * @throws FatalErrorException
+     * @throws /Exception
      */
     public function request($path, $method = 'GET', $data = '')
     {
